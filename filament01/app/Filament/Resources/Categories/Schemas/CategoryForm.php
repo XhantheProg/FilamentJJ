@@ -25,7 +25,11 @@ class CategoryForm
 
                         TextInput::make('slug')
                             ->required()
-                            ->label('Etiqueta'),
+                            ->label('Etiqueta')
+                            ->unique(table: 'categories', column: 'slug')
+                            ->validationMessages([ //personaliza el mensaje de error
+                                'unique' => 'El etiqueta ya esta registrado 🥲'
+                            ]),
                             
                         TextInput::make('summary')
                             ->required()

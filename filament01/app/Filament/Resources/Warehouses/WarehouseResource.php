@@ -19,8 +19,8 @@ class WarehouseResource extends Resource
 {
 
     protected static ?string $navigationLabel = 'Almacenes';
-    protected static ?string $label = 'Almacèn';
-    protected static ?string $pluralLabel = 'Almecenes';
+    protected static ?string $label = 'Almacén';
+    protected static ?string $pluralLabel = 'Almacenes';
 
     protected static ?string $slug = 'almacenes';
     protected static string|UnitEnum|null $navigationGroup = 'Administración';
