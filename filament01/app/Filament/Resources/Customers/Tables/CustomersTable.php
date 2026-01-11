@@ -32,9 +32,11 @@ class CustomersTable
                     ->label('NIT')
                     ->searchable(),
 
-                IconColumn::make('is_active')
+                TextColumn::make('is_active')
                     ->label('Estado')
-                    ->boolean(),
+                    ->badge()
+                    ->color(fn(bool $state)=> $state ? 'success':'danger') //closure funciones sin nombre
+                    ->formatStateUsing(fn(bool $state)=> $state ? 'Activo':'Inactivo'),
 
                 TextColumn::make('created_at')
                     ->label('Creado')

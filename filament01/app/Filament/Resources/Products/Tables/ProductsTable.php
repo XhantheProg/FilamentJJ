@@ -74,8 +74,12 @@ class ProductsTable
             ])
             ->recordActions([
                 EditAction::make()
+                    ->slideOver()
                     ->iconButton(),
                 DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading('¿Estas seguro que deseas eliminar este cliente?')
+                    ->modalSubheading('Esta accion no se puede deshacer') //submensaje al apretar borrar
                     ->iconButton(),
             ])
             ->toolbarActions([

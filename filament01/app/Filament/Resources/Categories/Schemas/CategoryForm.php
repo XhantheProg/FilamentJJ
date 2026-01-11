@@ -25,11 +25,12 @@ class CategoryForm
 
                         TextInput::make('slug')
                             ->required()
-                            ->label('Slug'),
+                            ->label('Etiqueta'),
                             
                         TextInput::make('summary')
                             ->required()
-                            ->label('Resumen'),
+                            ->label('Resumen')
+                            ,
 
                     ])
 

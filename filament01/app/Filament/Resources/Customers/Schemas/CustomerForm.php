@@ -24,7 +24,7 @@ class CustomerForm
 
                         TextInput::make('email')
                             ->label('Correo electrónico')
-                            ->email()
+                            ->email() //valida que sea un correo
                             ->unique(table: 'customers', column: 'email')
                             ->validationMessages([ //personaliza el mensaje de error
                                 'unique' => 'El correo ya esta registrado 🥲'

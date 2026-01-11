@@ -33,14 +33,16 @@ class CategoriesTable
                
                     //
             ])
-            ->recordActions([
-                EditAction::make() //aqui importas la funcion de editar
+            ->recordActions([ //aqui importas la funcion de editar y eliminar
+                EditAction::make()
+                    ->slideOver()
                     ->iconButton(),
-
-                DeleteAction::make()//aqui importas la funcion de borrar
+                DeleteAction::make()
+                    ->requiresConfirmation()
+                    ->modalHeading('¿Estas seguro que deseas eliminar este cliente?')
+                    ->modalSubheading('Esta accion no se puede deshacer') //submensaje al apretar borrar
                     ->iconButton(),
             ])
-
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
