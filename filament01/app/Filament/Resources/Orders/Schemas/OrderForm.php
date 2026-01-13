@@ -16,7 +16,7 @@ class OrderForm
     public static function configure(Schema $schema): Schema
     {
         return $schema
-        ->columns(1)
+            ->columns(1)
             ->components([
 
                 Section::make('Informacion de la venta')
@@ -26,8 +26,10 @@ class OrderForm
                             ->relationship('warehouse', 'name')
                             ->live()
                             ->default(null)
+                            ->label('Almacen')
                             ->required(),
                         Select::make('customer_id')
+                            ->label('Cliente')
                             ->relationship('customer', 'name')
                             ->required()
                             ->default(null)
@@ -39,18 +41,19 @@ class OrderForm
                         //     ->required()
                         //     ->numeric(),
                         Textarea::make('notes')
+                            ->label('Notas')
                             ->columnSpanFull(),
 
                     ]),
                 Section::make('Carrrito de compras')
-                    ->hidden(function(Get $get){
+                    ->hidden(function (Get $get) {
                         $isvisible = (empty($get('warehouse_id')) || (empty($get('customer_id')))); //si warehouse o customer estan vacios entonces oculta el section
                         return $isvisible;
                     })
                     ->columns(1)
                     ->schema([
                         // Aquí puedes agregar componentes para mostrar los productos en el carrito
-                            
+
                         Repeater::make('orderProducts')
                             ->columns(3)
                             ->relationship('orderProducts') //relacion con orderProducts
@@ -60,21 +63,22 @@ class OrderForm
                                     ->searchable()
                                     ->preload()
                                     ->required()
-                                    ->options(function(Get $get): array{
+                                    ->options(function (Get $get): array {
                                         $warehouseId = $get('../../warehouse_id'); //obtenemos el id del warehouse seleccionado "../.." para subir un nivel en el array
-                                        $product = Product::whereHas('inventories', function($query) use ($warehouseId){ // filtramos los productos que tienen inventario en el warehouse seleccionado
+
+                                        $product = Product::whereHas('inventories', function ($query) use ($warehouseId) { // filtramos los productos que tienen inventario en el warehouse seleccionado
                                             $query->where('warehouse_id', $warehouseId); //filtramos los productos que tienen inventario en el warehouse seleccionado
                                         })
-                                        ->pluck('name', 'id')->toArray(); //obtenemos los productos filtrados por warehouse
+                                            ->pluck('name', 'id')->toArray(); //obtenemos los productos filtrados por warehouse
+
                                         return $product;
-                                     
                                     }),
                                 TextInput::make('quantity')
                                     ->label('Cantidad')
                                     ->numeric()
                                     ->required()
                                     ->minValue(1),
-                                    
+
                                 TextInput::make('sub_total')
                                     ->label('Subtotal')
                                     ->required()
@@ -83,7 +87,7 @@ class OrderForm
                             ])
                             ->columns(3)
                             ->columnSpanFull(),
-                        ]),
+                    ]),
             ]);
     }
 }
