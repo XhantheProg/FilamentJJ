@@ -15,4 +15,9 @@ class Warehouse extends Model
     public function inventories(): HasMany{ //nombre de la funcion en plural
         return $this-> hasMany(Inventory::class); //relacion de uno a muchos (uno)
     }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
 }
