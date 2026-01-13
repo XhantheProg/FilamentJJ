@@ -38,4 +38,9 @@ class Product extends Model
     public function inventories(): HasMany{ //nombre de la funcion en plural
         return $this-> hasMany(Inventory::class); //relacion de uno a muchos (uno)
     }
+
+    public function orderProducts(): HasMany
+    {
+        return $this->hasMany(OrderProduct::class);
+    }
 }
