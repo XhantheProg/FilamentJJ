@@ -26,14 +26,13 @@ class OrderForm
                             ->relationship('warehouse', 'name')
                             ->live()
                             ->default(null)
-                            ->label('Almacen')
-                            ->required(),
+                            ->label('Almacen'),
+
                         Select::make('customer_id')
                             ->label('Cliente')
                             ->relationship('customer', 'name')
-                            ->required()
-                            ->default(null)
-                            ->live(),
+                            ->live()
+                            ->default(null),
                         // Select::make('user_id')
                         //     ->relationship('user', 'name')
                         //     ->required(),
@@ -42,15 +41,18 @@ class OrderForm
                         //     ->numeric(),
                         Textarea::make('notes')
                             ->label('Notas')
+                            ->default(null)
                             ->columnSpanFull(),
 
                     ]),
+
+
                 Section::make('Carrrito de compras')
+                    ->columns(1)
                     ->hidden(function (Get $get) {
                         $isvisible = (empty($get('warehouse_id')) || (empty($get('customer_id')))); //si warehouse o customer estan vacios entonces oculta el section
                         return $isvisible;
                     })
-                    ->columns(1)
                     ->schema([
                         // Aquí puedes agregar componentes para mostrar los productos en el carrito
 
@@ -59,10 +61,11 @@ class OrderForm
                             ->relationship('orderProducts') //relacion con orderProducts
                             ->schema([
                                 Select::make('product_id')
-                                    ->relationship('product', 'name')
+                                    ->label('Producto')
                                     ->searchable()
                                     ->preload()
                                     ->required()
+                                    ->relationship('product', 'name')
                                     ->options(function (Get $get): array {
                                         $warehouseId = $get('../../warehouse_id'); //obtenemos el id del warehouse seleccionado "../.." para subir un nivel en el array
 
@@ -74,19 +77,17 @@ class OrderForm
                                         return $product;
                                     }),
                                 TextInput::make('quantity')
-                                    ->label('Cantidad')
                                     ->numeric()
                                     ->required()
-                                    ->minValue(1),
+                                    ->minValue(1)
+                                    ->label('Cantidad'),
 
                                 TextInput::make('sub_total')
-                                    ->label('Subtotal')
-                                    ->required()
-                                    ->numeric()
-                                    ->minValue(0),
+                                ->numeric()
+                                ->minValue(0)
+                                ->label('Subtotal'),
                             ])
-                            ->columns(3)
-                            ->columnSpanFull(),
+                           
                     ]),
             ]);
     }
