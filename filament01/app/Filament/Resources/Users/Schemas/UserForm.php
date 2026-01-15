@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -29,6 +30,13 @@ class UserForm
                             ->password()
                             ->required(fn(string $context) => $context === 'create') // solo requerido al crear
                             ->dehydrated(fn($state) => filled($state)), // solo guardar si se llena
+
+                        Select::make('roles')
+                            ->label('Roles')
+                            ->multiple()
+                            ->relationship('roles', 'name')
+                            ->preload()
+                            ->required(),
                     ])
             ]);
     }

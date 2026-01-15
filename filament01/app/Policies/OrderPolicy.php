@@ -37,34 +37,4 @@ class OrderPolicy
         return $authUser->can('Delete:Order');
     }
 
-    public function restore(AuthUser $authUser, Order $order): bool
-    {
-        return $authUser->can('Restore:Order');
-    }
-
-    public function forceDelete(AuthUser $authUser, Order $order): bool
-    {
-        return $authUser->can('ForceDelete:Order');
-    }
-
-    public function forceDeleteAny(AuthUser $authUser): bool
-    {
-        return $authUser->can('ForceDeleteAny:Order');
-    }
-
-    public function restoreAny(AuthUser $authUser): bool
-    {
-        return $authUser->can('RestoreAny:Order');
-    }
-
-    public function replicate(AuthUser $authUser, Order $order): bool
-    {
-        return $authUser->can('Replicate:Order');
-    }
-
-    public function reorder(AuthUser $authUser): bool
-    {
-        return $authUser->can('Reorder:Order');
-    }
-
 }

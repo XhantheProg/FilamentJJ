@@ -37,34 +37,4 @@ class EjercicioPolicy
         return $authUser->can('Delete:Ejercicio');
     }
 
-    public function restore(AuthUser $authUser, Ejercicio $ejercicio): bool
-    {
-        return $authUser->can('Restore:Ejercicio');
-    }
-
-    public function forceDelete(AuthUser $authUser, Ejercicio $ejercicio): bool
-    {
-        return $authUser->can('ForceDelete:Ejercicio');
-    }
-
-    public function forceDeleteAny(AuthUser $authUser): bool
-    {
-        return $authUser->can('ForceDeleteAny:Ejercicio');
-    }
-
-    public function restoreAny(AuthUser $authUser): bool
-    {
-        return $authUser->can('RestoreAny:Ejercicio');
-    }
-
-    public function replicate(AuthUser $authUser, Ejercicio $ejercicio): bool
-    {
-        return $authUser->can('Replicate:Ejercicio');
-    }
-
-    public function reorder(AuthUser $authUser): bool
-    {
-        return $authUser->can('Reorder:Ejercicio');
-    }
-
 }

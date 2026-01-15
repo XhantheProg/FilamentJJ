@@ -13,9 +13,17 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class UserResource extends Resource
 {
+
+    protected static ?string $navigationLabel = 'Usuarios';
+    protected static ?string $label = 'Usuario';
+    protected static ?string $pluralLabel = 'Usuarios';
+
+    protected static ?string $slug = 'usuario';
+    protected static string|UnitEnum|null $navigationGroup = 'Seguridad';
     protected static ?string $model = User::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
@@ -43,8 +51,8 @@ class UserResource extends Resource
     {
         return [
             'index' => ListUsers::route('/'),
-            'create' => CreateUser::route('/create'),
-            'edit' => EditUser::route('/{record}/edit'),
+            // 'create' => CreateUser::route('/create'),
+            // 'edit' => EditUser::route('/{record}/edit'),
         ];
     }
 }
