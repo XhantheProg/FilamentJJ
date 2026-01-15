@@ -13,12 +13,20 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?string $navigationLabel = 'Ventas';
+    protected static ?string $label = 'Venta';
+    protected static ?string $pluralLabel = 'Ventas';
+
+    protected static ?string $slug = 'ventas';
+    protected static string|UnitEnum|null $navigationGroup = 'CRM';
+
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-currency-dollar';
 
     protected static ?string $recordTitleAttribute = 'Order';
 
@@ -43,8 +51,8 @@ class OrderResource extends Resource
     {
         return [
             'index' => ListOrders::route('/'),
-            'create' => CreateOrder::route('/create'),
-            'edit' => EditOrder::route('/{record}/edit'),
+            // 'create' => CreateOrder::route('/create'),
+            // 'edit' => EditOrder::route('/{record}/edit'),
         ];
     }
 }
