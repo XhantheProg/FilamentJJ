@@ -2,6 +2,11 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\Customers\Widgets\CustomersOverview;
+use App\Filament\Resources\Orders\Widgets\OrdersChart;
+use App\Filament\Resources\Orders\Widgets\OrdersOverview;
+use App\Filament\Widgets\DashboardOverview;
+use App\Filament\Widgets\ProductsOverview;
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -50,10 +55,16 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+            // ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
+                OrdersChart::class,
+                // ProductsOverview::class,
+                // OrdersOverview::class,
+                // CustomersOverview::class,
+
+                DashboardOverview::class,
             ])
             ->middleware([
                 EncryptCookies::class,
