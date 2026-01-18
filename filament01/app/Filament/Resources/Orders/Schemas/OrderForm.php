@@ -69,12 +69,12 @@ class OrderForm
                                     ->preload()
                                     ->live()
                                     ->required()
-                                    ->disabled(function(Get $get){
-                                       $warehouseId= $get('../../warehouse_id');
-                                       if(!$warehouseId){
-                                        return true;
-                                       }
-                                        return !Product ::whereHas('inventories', function ($query) use ($warehouseId) { // verificamos si hay productos en el warehouse seleccionado
+                                    ->disabled(function (Get $get) {
+                                        $warehouseId = $get('../../warehouse_id');
+                                        if (!$warehouseId) {
+                                            return true;
+                                        }
+                                        return !Product::whereHas('inventories', function ($query) use ($warehouseId) { // verificamos si hay productos en el warehouse seleccionado
                                             $query->where('warehouse_id', $warehouseId);
                                         })->exists(); //si no existen productos en el warehouse seleccionado, deshabilitamos el select
                                     })
@@ -99,44 +99,48 @@ class OrderForm
                                         $productId = $get('product_id');
                                         $warehouseId = $get('../../warehouse_id');
 
-                                        $stock= Inventory::where('product_id', $productId)
-                                        ->where('warehouse_id', $warehouseId)
-                                        ->value('quantity') ?? 0;
+                                        $stock = Inventory::where('product_id', $productId)
+                                            ->where('warehouse_id', $warehouseId)
+                                            ->value('quantity') ?? 0;
 
                                         return "Stock disponible: {$stock}";
                                     })
-                                    
-                                    ->afterStateUpdated(function(Get $get, Set $set, $state){
+
+                                    ->afterStateUpdated(function (Get $get, Set $set, $state) {
                                         $productId = $get('product_id');
                                         $quantity = $get('quantity');
 
-                                        $product = Product::find($productId); //obtenemos el producto seleccionado
-                                        $subtotal = ($quantity * $product->price); //calculamos el subtotal -> significa que el producto tiene un precio fijo "->" significa que quiero de producto el precio y lo multiploque el quntity
+                                        $product = Product::find($productId);
+
+                                        $subtotal = $product
+                                            ? $quantity * $product->price
+                                            : 0;
+
                                         $set('sub_total', $subtotal);
                                     })
-                                    ->rule(function(Get $get){
+                                    ->rule(function (Get $get) {
                                         $productId = $get('product_id');
                                         $warehouseId = $get('../../warehouse_id');
 
-                                        $stock= Inventory::where('product_id', $productId)
-                                        ->where('warehouse_id', $warehouseId)
-                                        ->value('quantity') ?? 0;
+                                        $stock = Inventory::where('product_id', $productId)
+                                            ->where('warehouse_id', $warehouseId)
+                                            ->value('quantity') ?? 0;
 
                                         return "max:{$stock}"; //la cantidad maxima sera el stock disponible
                                     })
-                                    ->validationMessages( [
+                                    ->validationMessages([
                                         'max' => 'La cantidad excede el stock disponible.',
                                     ]),
 
                                 TextInput::make('sub_total')
-                                ->numeric()
-                                ->minValue(0)
-                                ->label('Subtotal'),
+                                    ->numeric()
+                                    ->minValue(0)
+                                    ->label('Subtotal'),
                             ])
-                            ->afterStateUpdated(function(Get $get, Set $set, $state){
+                            ->afterStateUpdated(function (Get $get, Set $set, $state) {
                                 $total = 0;
 
-                                foreach($state as $item){
+                                foreach ($state as $item) {
                                     $productId = $item['product_id'];
                                     $quantity = $item['quantity'] ?? 0;
 
@@ -147,10 +151,10 @@ class OrderForm
 
                                 $set('total', $total);
                             }),
-                           
+
                     ]),
                 Section::make('Resumen de la orden')
-                    ->hidden(function (Get $get):bool {
+                    ->hidden(function (Get $get): bool {
                         $isvisible = (empty($get('warehouse_id')) || (empty($get('customer_id')))); //si warehouse o customer estan vacios entonces oculta el section
                         return $isvisible;
                     })
@@ -160,6 +164,7 @@ class OrderForm
                             ->label('Total')
                             ->numeric()
                             ->disabled()
+                            ->dehydrated() // 👈 ESTO ES LA CLAVE
                             ->default(0),
                     ]),
             ]);
